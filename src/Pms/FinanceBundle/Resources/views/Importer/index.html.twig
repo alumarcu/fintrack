@@ -1,0 +1,47 @@
+{% extends 'PmsFinanceBundle::index.html.twig' %}
+
+{% block title %}{{ parent() }} - Data Importer{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        var view = new View('importer');
+    </script>
+{% endblock %}
+
+{% block content %}
+    {{ parent() }}
+
+    <div class="page-header">
+        <h1>Data Importer</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2 class="panel-title">
+                        Import Data
+                    </h2>
+
+                </div>
+                <div class="panel-body">
+                    <form name="dataImporter" id="dataImporter" method="post" action="">
+                        <textarea id="importerContent" name="importerContent" rows="10" class="form-control" cols="60" placeholder="Paste your data here">{{ importerContent }}</textarea>
+                        <input type="hidden" id="importerData" name="importerData" value=""/>
+                        <button type="submit" class="btn btn-primary" id="importerCsvButton">Import from CSV</button>
+                    </form>
+                    <div class="well well-sm">
+                        CSV expected row format: #date#, #expense#, #income#, #account#
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 col-xs-12"></div>
+    </div>
+
+{% endblock %}

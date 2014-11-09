@@ -1,0 +1,47 @@
+
+<div class="row">
+    <div class="col-md-6 col-xs-12">
+        {% for accountName, account in balance %}
+            <div class="accountBalance panel panel-default">
+                <div class="panel-heading">
+                    <h2 class="panel-title">
+                        {{ accountName }}&nbsp;
+                        <small>Most recent {{ filters.rows_per_account }} balance changes</small>
+                    </h2>
+
+                </div>
+                <div class="panel-body">
+                    <table class="table table-condensed table-bordered balanceTable">
+                        <tr>
+                            <th class="w90">Date</th>
+                            <th class="money">Change</th>
+                            <th class="scope">Scope</th>
+                            <th class="money">Balance</th>
+                        </tr>
+                        {% for row in account %}
+                            <tr {% if row.type == 1 %}class="income"{% endif %}>
+                                <td class="w90">{{ row.date|date("d-M-y") }}</td>
+                                <td class="money">
+                                    {% if row.type == 1 %}
+                                        <span class="sign-in-cell">+</span>
+                                        <span class="money-in-cell">{{ row.value|number_format(1, '.', ',') }}</span>
+                                        <span class="currency-in-cell">{{ row.currency }}</span>
+                                    {% elseif row.type == 0 %}
+                                        <span class="sign-in-cell">&ndash;</span>
+                                        <span class="money-in-cell">{{ row.value|number_format(1, '.', ',') }}</span>
+                                        <span class="currency-in-cell">{{ row.currency }}</span>
+                                    {% endif %}
+                                </td>
+                                <td class="scope"><span class="label label-default">{{ row.scope }}</span></td>
+                                <td class="money balance-col"><span class="money-in-cell">{{ row.availableBalance|number_format(1, '.', ',') }}</span> <span class="currency-in-cell">{{ row.currency }}</span></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="col-md-6 col-xs-12">
+
+    </div>
+</div>

@@ -1,0 +1,4 @@
+services:
+#    pms_layout.example:
+#        class: Pms\LayoutBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]

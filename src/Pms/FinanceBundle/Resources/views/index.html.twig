@@ -1,0 +1,39 @@
+{% extends '::base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+        '@PmsFinanceBundle/Resources/public/css/financebundle-styles.css'
+        output='bundles/pmslayout/css/financebundle-styles.css' %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+
+{% endblock %}
+
+{% block javascripts %}
+
+    {{ parent() }}
+    {% javascripts
+        '@PmsFinanceBundle/Resources/public/js/financebundle-functions.js'
+        output='bundles/pmsfinance/js/financebundle-functions.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+{% endblock %}
+
+{% block menu %}
+    {% set menuParams = {
+        'menuSource': 'pms_finance.menu',
+        'currentRoute': app.request.get('_route')
+    } %}
+    {{ parent() }}
+{% endblock %}
+
+{% block navbar %}
+    {{ parent() }}
+    <div class="navbar-header">
+        <a class="navbar-brand" href="{{ path('pms_finance_dashboard') }}">PMS Finance Tracking</a>
+    </div>
+{% endblock %}
+
+{% block title %}PMS Finance Tracking{% endblock %}

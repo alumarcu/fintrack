@@ -1,0 +1,39 @@
+{% extends 'PmsFinanceBundle::index.html.twig' %}
+
+{% block title %}{{ parent() }} - Dashboard{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/pmslayout/css/select2.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/pmslayout/css/select2-bootstrap.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/pmslayout/css/datepicker3.css') }}" />
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/pmslayout/js/select2.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/pmslayout/js/typeahead.bundle.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/pmslayout/js/bootstrap-datepicker.js') }}"></script>
+    <script type="text/javascript">
+        var view = new View('dashboard');
+        view.set('scopes', JSON.parse('{{ scopes|json_encode|raw }}'));
+        view.init();
+    </script>
+{% endblock %}
+
+{% block content %}
+    {{ parent() }}
+    <div class="row">
+        <div class="col-md-4 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">New transaction</h3>
+                </div>
+                <div class="panel-body">
+                    {% include 'PmsFinanceBundle:Partials:transactionForm.html.twig' %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 col-xs-12"></div>
+    </div>
+{% endblock %}

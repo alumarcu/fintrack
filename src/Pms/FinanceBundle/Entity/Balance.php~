@@ -1,0 +1,200 @@
+<?php
+namespace Pms\FinanceBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Account
+ *
+ * @ORM\Entity
+ * @ORM\Table(name="fin_balance")
+ */
+class Balance
+{
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    protected $dateRecorded;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    protected $dateOccurred;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $value;
+
+    /**
+     * @ORM\Column(type="smallint")
+     */
+    protected $type;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Account", inversedBy="balance")
+     * @ORM\JoinColumn(name="account_id", referencedColumnName="id")
+     */
+    protected $account;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Scope", inversedBy="balance")
+     * @ORM\JoinColumn(name="scope_id", referencedColumnName="id")
+     */
+    protected $scope;
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set dateRecorded
+     *
+     * @param \DateTime $dateRecorded
+     * @return Balance
+     */
+    public function setDateRecorded($dateRecorded)
+    {
+        $this->dateRecorded = $dateRecorded;
+
+        return $this;
+    }
+
+    /**
+     * Get dateRecorded
+     *
+     * @return \DateTime 
+     */
+    public function getDateRecorded()
+    {
+        return $this->dateRecorded;
+    }
+
+    /**
+     * Set dateOccurred
+     *
+     * @param \DateTime $dateOccurred
+     * @return Balance
+     */
+    public function setDateOccurred($dateOccurred)
+    {
+        $this->dateOccurred = $dateOccurred;
+
+        return $this;
+    }
+
+    /**
+     * Get dateOccurred
+     *
+     * @return \DateTime 
+     */
+    public function getDateOccurred()
+    {
+        return $this->dateOccurred;
+    }
+
+    /**
+     * Set value
+     *
+     * @param integer $value
+     * @return Balance
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get value
+     *
+     * @return integer 
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    /**
+     * Set type
+     *
+     * @param integer $type
+     * @return Balance
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return integer 
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set account
+     *
+     * @param \Pms\FinanceBundle\Entity\Account $account
+     * @return Balance
+     */
+    public function setAccount(\Pms\FinanceBundle\Entity\Account $account = null)
+    {
+        $this->account = $account;
+
+        return $this;
+    }
+
+    /**
+     * Get account
+     *
+     * @return \Pms\FinanceBundle\Entity\Account 
+     */
+    public function getAccount()
+    {
+        return $this->account;
+    }
+
+    /**
+     * Set scope
+     *
+     * @param \Pms\FinanceBundle\Entity\Scope $scope
+     * @return Balance
+     */
+    public function setScope(\Pms\FinanceBundle\Entity\Scope $scope = null)
+    {
+        $this->scope = $scope;
+
+        return $this;
+    }
+
+    /**
+     * Get scope
+     *
+     * @return \Pms\FinanceBundle\Entity\Scope 
+     */
+    public function getScope()
+    {
+        return $this->scope;
+    }
+}

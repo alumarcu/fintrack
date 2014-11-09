@@ -1,0 +1,83 @@
+<form name="transaction" method="post">
+    <div class="row">
+        <div class="col-xs-5 no-padding">
+            <div class="">
+                <label for="transaction_sourceAccount">Source</label>
+            </div>
+            <div class="">
+                <select id="transaction_sourceAccount" name="transaction[sourceAccount]" class="form-control select2">
+                    <option value="null">External</option>
+                    {% for acco in accounts %}
+                        <option value="{{ acco.id }}" {% if acco.isFavorite == 1 %}selected="selected"{% endif %}>{{ acco.displayName }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="col-xs-2 no-padding text-center">
+            <button type="button" class="btn btn-xs btn-info" id="transaction_swapAccounts" style="margin-top: 22px;"><span class="fa fa-exchange"></span></button>
+        </div>
+        <div class="col-xs-5 no-padding">
+            <div class="">
+                <label for="transaction_destinationAccount">Destination</label>
+            </div>
+            <div class="">
+                <select id="transaction_destinationAccount" name="transaction[destinationAccount]" class="form-control select2">
+                    <option value="null">External</option>
+                    {% for acco in accounts %}
+                        <option value="{{ acco.id }}">{{ acco.displayName }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-xs-4 no-padding">
+            <div class="">
+                <label for="transaction_value">Value</label>
+            </div>
+            <div class="">
+                <input type="text" id="transaction_value" name="transaction[value]" class="form-control" />
+            </div>
+        </div>
+        <div class="col-xs-7 no-padding">
+            <div class="">
+                <label for="transaction_scope">Scope</label>
+            </div>
+            <div class="">
+                <input id="transaction_scope" name="transaction[scope]" class="form-control typeahead_scopes" />
+            </div>
+        </div>
+        <div class="col-xs-1 no-padding text-center">
+            <button type="button" class="btn btn-xs btn-primary" id="transaction_lockTransaction" style="margin-top: 22px;"><span class="fa fa-unlock"></span></button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 no-padding">
+            <div class="well well-sm">
+                <a id="transaction_addPartialScope">Add Partial Scope <span class="fa fa-arrow-circle-up"></span></a>
+                <h4>Recent</h4>
+                <div class="well well-sm">
+                    {% for scope in quickScopes %}
+                        <span class="label label-default quickScope">{{ scope }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-8 no-padding">
+            <div class="input-group date">
+                <input type="text" id="transaction_dateOccurred" name="transaction[dateOccurred]" class="form-control datepicker" data-date-format="dd-mm-yyyy" value="{{ 'now'|date('d-m-Y') }}" />
+                <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
+            </div>
+        </div>
+        <div class="col-xs-4 no-padding">
+            <button type="button" class="btn btn-primary form-control" id="transaction_save"><span class="fa fa-check-circle"></span> Save</button>
+        </div>
+    </div>
+
+</form>

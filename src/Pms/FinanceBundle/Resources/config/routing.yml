@@ -1,0 +1,8 @@
+pms_finance_dashboard:
+    path:     /
+    defaults: { _controller: PmsFinanceBundle:Dashboard:index }
+pms_finance_importer:
+    path: /importer
+    defaults: { _controller: PmsFinanceBundle:Importer:index }
+
+

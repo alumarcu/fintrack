@@ -1,0 +1,10 @@
+services:
+    pms_finance.menu:
+        class: Pms\FinanceBundle\Service\MenuService
+        arguments: []
+    pms_finance.dashboard:
+        class: Pms\FinanceBundle\Service\DashboardService
+        arguments:
+            em: "@doctrine.orm.entity_manager"
+            formFactory: "@form.factory"
+

@@ -1,0 +1,12 @@
+<div class="navigation-pane">
+    <ul class="nav nav-pills nav-stacked">
+        {% for menuItem in menu %}
+            {% if currentRoute is defined and currentRoute == menuItem.location %}
+                {% set activeClass = ' active' %}
+            {% else %}
+                {% set activeClass = '' %}
+            {% endif %}
+            <li class="menu-item{{ activeClass }}"><a href="{{ path(menuItem.location) }}"><span class="fa {{ menuItem.icon }}"></span> {{ menuItem.name }}</a></li>
+        {% endfor %}
+    </ul>
+</div>

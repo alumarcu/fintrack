@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('bundles/pmslayout/css/bootstrap.min.css') }}" />
+        <link rel="stylesheet" href="{{ asset('bundles/pmslayout/css/bootstrap-theme.min.css') }}" />
+        <link rel="stylesheet" href="{{ asset('bundles/pmslayout/css/font-awesome.min.css') }}" />
+        {% stylesheets
+            '@PmsLayoutBundle/Resources/public/css/styles.css'
+            output='bundles/pmslayout/css/styles.css' %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+    {% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+</head>
+<body>
+{% block body %}
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-xs-12 no-padding">
+            <nav class="navbar navbar-default" role="navigation">
+                {% block navbar %}{% endblock %}
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2 col-xs-12">
+            {% block menu %}
+                {{ render(controller('PmsLayoutBundle:Menu:menu', menuParams)) }}
+            {% endblock %}
+        </div>
+        <div class="col-md-10 col-xs-12 col-page-content">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('bundles/pmslayout/js/jquery-2.1.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/pmslayout/js/bootstrap.min.js') }}"></script>
+{% endblock %}
+</body>
+</html>

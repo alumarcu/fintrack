@@ -1,0 +1,55 @@
+body {
+    background-color: #eeeeee;
+}
+
+.incomeSwitch {
+    background-color: #ff0000;
+    color: #ffffff;
+    display: block;
+    width: 20px;
+    height: 20px;
+    margin: 4px;
+    padding: 2px;
+    border-radius: 0px 11px 11px 11px;
+}
+
+.accountBalance {
+    margin-bottom: 30px;
+}
+.balanceTable {
+
+}
+.balanceTable th {
+    text-transform: uppercase;
+    font-size: 9pt;
+    background-color: #ffa200;
+    color: #ffffff;
+}
+.balanceTable .money {
+    width: 140px;
+}
+.balanceTable td.balance-col {
+    background-color: #f8efc0;
+}
+.balanceTable tr.income {
+    background-color: #b2dba1;
+}
+
+.money-in-cell {
+    font-weight: bold;
+    font-family: monospace;
+    display: inline-block;
+    padding: 0 1px;
+}
+.currency-in-cell {
+    float: right;
+    display: inline-block;
+    font-size: 8pt;
+}
+.sign-in-cell {
+    display: inline-block;
+    width: 11px;
+    text-align: center;
+    margin: 0 3px;
+    float: left;
+}

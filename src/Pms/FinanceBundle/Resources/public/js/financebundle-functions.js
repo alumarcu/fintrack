@@ -48,6 +48,8 @@ var viewHandlers = {
             weekStart: 1
         });
 
+        console.log(Routing.generate('pms_finance_dummy'));
+
         swapAccounts.click(function() {
             console.log('Swapping accounts');
         });

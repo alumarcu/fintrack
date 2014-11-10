@@ -48,4 +48,9 @@ class DashboardController extends Controller
             )
         );
     }
+
+    public function dummyAction(Request $request) {
+
+        die("HERE");
+    }
 }

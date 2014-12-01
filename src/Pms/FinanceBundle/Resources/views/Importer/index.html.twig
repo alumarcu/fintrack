@@ -8,8 +8,10 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/pmsfinance/js/views/importer.js') }}"></script>
     <script type="text/javascript">
-        var view = new View('importer');
+        var view = new View(importer);
+        view.init();
     </script>
 {% endblock %}
 

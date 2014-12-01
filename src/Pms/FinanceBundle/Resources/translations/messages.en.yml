@@ -2,3 +2,4 @@ pms_finance_bundle:
       expense: 'Expense'
       income: 'Income'
       add: 'Add'
+      external: 'External'

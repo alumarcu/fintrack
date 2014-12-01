@@ -44,6 +44,13 @@
 {% block javascripts %}
     <script type="text/javascript" src="{{ asset('bundles/pmslayout/js/jquery-2.1.1.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/pmslayout/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/pmslayout/js/vendor/easejs/ease.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/pmslayout/js/vendor/mustachejs/mustache.js') }}"></script>
+    {% javascripts
+        '@PmsLayoutBundle/Resources/public/js/base.js'
+        output='bundles/pmsfinance/js/pms' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}
 </body>
 </html>

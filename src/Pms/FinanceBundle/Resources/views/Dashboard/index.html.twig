@@ -17,8 +17,13 @@
     <script type="text/javascript" src="{{ asset('bundles/pmslayout/js/select2.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/pmslayout/js/typeahead.bundle.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/pmslayout/js/bootstrap-datepicker.js') }}"></script>
+    {% javascripts
+        '@PmsFinanceBundle/Resources/public/js/views/dashboard.js'
+        output='bundles/pmsfinance/js/view' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
     <script type="text/javascript">
-        var view = new View('dashboard');
+        var view = new DashboardView();
         view.set('scopes', JSON.parse('{{ scopes|json_encode|raw }}'));
         view.init();
     </script>

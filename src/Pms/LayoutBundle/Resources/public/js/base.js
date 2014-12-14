@@ -20,6 +20,7 @@ var
 
     View  = easejs.AbstractClass( 'View',
     {
+        // TODO: Rename to ViewElement which will be a building block for views!
         'abstract protected _onDocumentReady': [],
         'protected _properties': {},
         'protected _pageElements': [],
@@ -52,7 +53,6 @@ var
             } else {
                 this._properties[elemKey].click(context, callback);
             }
-
         }
     } ),
 

@@ -11,9 +11,7 @@ class TransactionRepository extends EntityRepository
         $qb = $this->createQueryBuilder('t');
         foreach ($filters as $filterKey => $filterVal) {
             switch ($filterKey) {
-                case 'lj_scope':
-                    $qb->leftJoin('t.scope', 's');
-                    break;
+
             }
         }// foreach
 
@@ -23,7 +21,7 @@ class TransactionRepository extends EntityRepository
     public function getTransactions(array $options = array(), array $filters = array())
     {
         $defaultFilters = array(
-            'lj_scope' => 1,
+
         );
         $filters = array_merge($defaultFilters, array_filter($filters));
 
@@ -38,11 +36,9 @@ class TransactionRepository extends EntityRepository
 
         $qb = $this->getBuilderByFilters($filters);
         $qb->select(
-            't.value',
             'IDENTITY(t.sourceAccount) AS sourceAccount',
             'IDENTITY(t.destinationAccount) AS destinationAccount',
-            't.dateOccurred',
-            "s.name AS scope"
+            't.dateOccurred'
         );
         $qb->orderBy('t.dateOccurred', 'DESC');
 

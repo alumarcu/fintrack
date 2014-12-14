@@ -1,8 +1,12 @@
 /* Global element styles */
-
+body {
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
 /* Important page classes */
 .col-page-content {
     background-color: #FFFFFF;
+    padding: 10px;
 }
 .navigation-pane {
     margin: 10px 0;
@@ -16,6 +20,10 @@
 
 .w80 { width: 80px; }
 .w90 { width: 90px; }
+
+.mt22 { margin-top: 22px; }
+
+.sq24 { width: 24px; height: 24px; }
 
 /* Bootstrap Overrides */
 .form-group { margin-bottom: 10px; }

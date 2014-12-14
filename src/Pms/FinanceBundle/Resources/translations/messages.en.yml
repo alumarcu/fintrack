@@ -3,3 +3,8 @@ pms_finance_bundle:
       income: 'Income'
       add: 'Add'
       external: 'External'
+      source: 'Source'
+      destination: 'Destination'
+      add_partial_scope: 'Add partial scope'
+      value: 'Value'
+      scope: 'Scope'

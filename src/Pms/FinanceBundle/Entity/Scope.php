@@ -1,6 +1,7 @@
 <?php
 namespace Pms\FinanceBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -23,6 +24,16 @@ class Scope
      */
     protected $name;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Scope", inversedBy="children")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", nullable=true)
+     */
+    protected $parent;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Scope", mappedBy="parent")
+     */
+    protected $children;
 
     /**
      * Get id
@@ -32,6 +43,11 @@ class Scope
     public function getId()
     {
         return $this->id;
+    }
+
+    public function __construct()
+    {
+        $this->children = new ArrayCollection();
     }
 
     /**
@@ -64,5 +80,31 @@ class Scope
     {
         return $this->name;
     }
+
+    /**
+     * @param mixed $parent
+     */
+    public function setParent($parent)
+    {
+        $this->parent = $parent;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+
 
 }

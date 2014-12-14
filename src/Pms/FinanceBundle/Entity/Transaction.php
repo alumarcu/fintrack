@@ -1,6 +1,7 @@
 <?php
 namespace Pms\FinanceBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,11 +20,6 @@ class Transaction
     protected $id;
 
     /**
-     * @ORM\Column(type="float")
-     */
-    protected $value;
-
-    /**
      * @ORM\ManyToOne(targetEntity="Account")
      * @ORM\JoinColumn(name="source_account_id", referencedColumnName="id", nullable=true)
      */
@@ -36,12 +32,6 @@ class Transaction
     protected $destinationAccount;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Scope")
-     * @ORM\JoinColumn(name="scope_id", referencedColumnName="id", nullable=true)
-     */
-    protected $scope;
-
-    /**
      * @ORM\Column(type="date")
      */
     protected $dateRecorded;
@@ -50,6 +40,17 @@ class Transaction
      * @ORM\Column(type="date")
      */
     protected $dateOccurred;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Transaction", mappedBy="parent")
+     */
+    protected $lines;
+
+
+    public function __construct()
+    {
+        $this->lines = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -108,75 +109,6 @@ class Transaction
     }
 
     /**
-     * Set value
-     *
-     * @param integer $value
-     * @return Transaction
-     */
-    public function setValue($value)
-    {
-        $this->value = $value;
-
-        return $this;
-    }
-
-    /**
-     * Get value
-     *
-     * @return integer 
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
-
-    /**
-     * Set type
-     *
-     * @param integer $type
-     * @return Transaction
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * Get type
-     *
-     * @return integer 
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * Set scope
-     *
-     * @param \Pms\FinanceBundle\Entity\Scope $scope
-     * @return Transaction
-     */
-    public function setScope($scope)
-    {
-        $this->scope = $scope;
-
-        return $this;
-    }
-
-    /**
-     * Get scope
-     *
-     * @return \Pms\FinanceBundle\Entity\Scope 
-     */
-    public function getScope()
-    {
-        return $this->scope;
-    }
-
-    /**
      * @param mixed $destinationAccount
      */
     public function setDestinationAccount($destinationAccount)
@@ -208,5 +140,12 @@ class Transaction
         return $this->sourceAccount;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getLines()
+    {
+        return $this->lines;
+    }
 
 }

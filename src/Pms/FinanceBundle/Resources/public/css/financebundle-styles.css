@@ -53,3 +53,36 @@ body {
     margin: 0 3px;
     float: left;
 }
+
+#form_NewTransaction .row {
+    margin-left: -5px !important;
+    margin-right: -5px !important;
+    margin-bottom: 15px;
+}
+#form_NewTransaction label {
+    margin-bottom: 0px;
+    display: block;
+}
+#form_NewTransaction .form-cell {
+    padding: 0px 4px;
+}
+#form_NewTransaction .interaction {
+    cursor: pointer;
+}
+#form_NewTransaction .well-quick-scopes #partialScopes {
+    margin-bottom: 20px;
+}
+#form_NewTransaction .well {
+    margin-bottom: 0px;
+}
+#form_NewTransaction .well-quick-scopes h4 {
+    margin: 10px 0 5px 0px;
+    font-size: 14px;
+    border-top: 1px dotted #BBBBBB;
+    padding-top: 5px;
+    text-indent: 10px;
+}
+#form_NewTransaction .closePartialScope {
+    padding: 3px 6px;
+    color: #aaaaaa;
+}

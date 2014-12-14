@@ -4,9 +4,9 @@ pms_finance_dashboard:
 pms_finance_importer:
     path: /importer
     defaults: { _controller: PmsFinanceBundle:Importer:index }
-pms_finance_dummy:
-    path:     /dummy
-    defaults: { _controller: PmsFinanceBundle:Dashboard:dummy }
+pms_finance_async_save_transaction:
+    path:     /async/save-transaction
+    defaults: { _controller: PmsFinanceBundle:Dashboard:saveTransaction }
     options:
         expose: true
 

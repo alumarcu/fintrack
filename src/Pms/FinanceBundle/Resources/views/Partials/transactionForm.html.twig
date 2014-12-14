@@ -1,9 +1,9 @@
-<form name="transaction" method="post">
+<form name="NewTransaction" id="form_NewTransaction" method="post">
 
     <div class="row">
         {# Source account cell #}
         <div class="col-xs-5 no-padding">
-            <div class="column-cell"><label for="sourceAccount">Source</label></div>
+            <div class="column-cell"><label for="sourceAccount">{% trans %}pms_finance_bundle.source{% endtrans %}</label></div>
             <div class="column-cell">
                 <select id="sourceAccount" name="transaction[sourceAccount]" class="form-control select2">
                     <option value="null">{% trans %}pms_finance_bundle.external{% endtrans %}</option>
@@ -16,7 +16,7 @@
 
         {# Switch accounts cell #}
         <div class="col-xs-2 no-padding text-center">
-            <button type="button" class="btn btn-xs btn-info" id="swapAccounts" style="margin-top: 22px;">
+            <button type="button" class="btn btn-xs btn-info mt22 sq24" id="swapAccounts">
                 <span class="fa fa-exchange"></span>
             </button>
         </div>
@@ -24,7 +24,7 @@
         {# Destination account cell #}
         <div class="col-xs-5 no-padding">
             <div class="column-cell">
-                <label for="destinationAccount">Destination</label>
+                <label for="destinationAccount">{% trans %}pms_finance_bundle.destination{% endtrans %}</label>
             </div>
             <div class="column-cell">
                 <select id="destinationAccount" name="transaction[destinationAccount]" class="form-control select2">
@@ -39,35 +39,35 @@
 
     <div class="row">
         <div class="col-xs-4 no-padding">
-            <div class="">
-                <label for="value">Value</label>
+            <div class="form-cell">
+                <label for="value">{% trans %}pms_finance_bundle.value{% endtrans %}</label>
             </div>
-            <div class="">
+            <div class="form-cell">
                 <input type="text" id="value" name="transaction[value]" class="form-control" />
             </div>
         </div>
         <div class="col-xs-7 no-padding">
-            <div class="">
-                <label for="scope">Scope</label>
+            <div class="form-cell">
+                <label for="scope">{% trans %}pms_finance_bundle.scope{% endtrans %}</label>
             </div>
-            <div class="">
+            <div class="form-cell">
                 <input id="scope" name="transaction[scope]" class="form-control" />
             </div>
         </div>
         <div class="col-xs-1 no-padding text-center">
-            <button type="button" class="btn btn-xs btn-primary" id="lockTransaction"><span class="fa fa-unlock"></span></button>
+            <button type="button" class="btn btn-xs btn-primary mt22 sq24" id="lockTransaction"><span class="fa fa-unlock"></span></button>
         </div>
     </div>
 
     <div class="row">
         <div class="col-xs-12 no-padding">
-            <div class="well well-sm">
+            <div class="well well-sm well-quick-scopes">
                 <div id="partialScopes"></div>
-                <a id="addPartialScope">Add Partial Scope <span class="fa fa-arrow-circle-up"></span></a>
+                <a id="addPartialScope" class="interaction">{% trans %}pms_finance_bundle.add_partial_scope{% endtrans %}&nbsp;<span class="fa fa-arrow-circle-up"></span></a>
                 <h4>Recent</h4>
                 <div class="well well-sm">
                     {% for scope in quickScopes %}
-                        <span class="label label-default quickScope">{{ scope }}</span>
+                        <span class="label label-default quickScope interaction">{{ scope }}</span>
                     {% endfor %}
                 </div>
             </div>
@@ -75,14 +75,16 @@
     </div>
 
     <div class="row">
-        <div class="col-xs-8 no-padding">
+        <div class="col-xs-8 form-cell">
             <div class="input-group date">
                 <input type="text" id="dateOccurred" name="transaction[dateOccurred]" class="form-control datepicker" data-date-format="dd-mm-yyyy" value="{{ 'now'|date('d-m-Y') }}" />
                 <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
             </div>
         </div>
-        <div class="col-xs-4 no-padding">
-            <button type="button" class="btn btn-primary form-control" id="saveTransaction"><span class="fa fa-check-circle"></span> Save</button>
+        <div class="col-xs-4 form-cell">
+            <button type="button" class="btn btn-primary form-control" id="saveTransaction">
+                <span class="fa fa-check-circle"></span> Save
+            </button>
         </div>
     </div>
 
@@ -90,14 +92,14 @@
 <script id="partialScopeCell" type="x-tmpl-mustache">
 {% verbatim %}
 <div id="{{ psId }}" class="row partialScopePair">
-    <div class="col-xs-4 no-padding">
-        <input type="text" value="" class="form-control partialScopeValue"/>
+    <div class="col-xs-4 form-cell">
+        <input type="text" id="partialValue" value="" class="form-control partialScopeValue"/>
     </div>
-    <div class="col-xs-6 no-padding">
-        <input type="text" value="{{ clickedScope }}" class="form-control partialScopeName"/>
+    <div class="col-xs-6 form-cell">
+        <input type="text" id="partialScope" value="{{ clickedScope }}" class="form-control partialScopeName"/>
     </div>
-    <div class="closePartialScope col-xs-2">
-        <span class="fa fa-close"></span>
+    <div class="closePartialScope col-xs-2 sq24">
+        <span class="fa fa-close interaction"></span>
     </div>
 </div>
 {% endverbatim %}

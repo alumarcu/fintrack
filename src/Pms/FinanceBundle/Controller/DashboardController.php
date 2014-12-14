@@ -49,8 +49,12 @@ class DashboardController extends Controller
         );
     }
 
-    public function dummyAction(Request $request) {
-
+    public function saveTransactionAction(Request $request) {
+        $rawRequest = $request->getContent();
+        var_dump($rawRequest);
         die("HERE");
+        // Create Transaction and Transaction Lines
+        // if there are no partials then create only one line
+        // if there are parts, the amount not included will create a transaction line for main scope
     }
 }

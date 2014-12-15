@@ -25,7 +25,7 @@ class TransactionLine
     protected $transaction;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Transaction")
+     * @ORM\ManyToOne(targetEntity="Scope")
      * @ORM\JoinColumn(name="scope_id", referencedColumnName="id", nullable=false)
      */
     protected $scope;

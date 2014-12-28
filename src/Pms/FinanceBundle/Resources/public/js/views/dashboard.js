@@ -118,10 +118,10 @@ var DashboardView = easejs.Class('DashboardView').extend( View,
     'public sendSaveTransaction': function(ds) {
         var payload = JSON.stringify(ds), httpRequest;
         console.log(ds);
-        console.log(Routing.generate('pms_finance_async_save_transaction'));
+        console.log(Routing.generate('pms_finance_save_transaction'));
 
         httpRequest = $.ajax( {
-            url: Routing.generate('pms_finance_async_save_transaction'),
+            url: Routing.generate('pms_finance_save_transaction'),
             type: 'POST',
             data: payload,
             dataType: 'json',

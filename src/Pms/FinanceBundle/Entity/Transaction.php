@@ -42,7 +42,7 @@ class Transaction
     protected $dateOccurred;
 
     /**
-     * @ORM\OneToMany(targetEntity="Transaction", mappedBy="parent")
+     * @ORM\OneToMany(targetEntity="TransactionLine", mappedBy="transaction")
      */
     protected $lines;
 
@@ -114,6 +114,8 @@ class Transaction
     public function setDestinationAccount($destinationAccount)
     {
         $this->destinationAccount = $destinationAccount;
+
+        return $this;
     }
 
     /**
@@ -130,6 +132,8 @@ class Transaction
     public function setSourceAccount($sourceAccount)
     {
         $this->sourceAccount = $sourceAccount;
+
+        return $this;
     }
 
     /**

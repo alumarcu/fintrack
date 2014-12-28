@@ -11,13 +11,32 @@ class TransactionRepository extends EntityRepository
         $qb = $this->createQueryBuilder('t');
         foreach ($filters as $filterKey => $filterVal) {
             switch ($filterKey) {
-
+                case 'sourceAccount':
+                case 'destinationAccount':
+                    $qb->andWhere("t.{$filterKey} = :{$filterKey}")
+                        ->setParameter($filterKey, $filterVal);
+                    break;
+                case 'containsAccount':
+                    $qb->orWhere("t.sourceAccount = :{$filterKey}")
+                        ->orWhere("t.destinationAccount = :{$filterKey}")
+                        ->setParameter($filterKey, $filterVal);
+                    break;
+                case 'occurredAfterOrEqual':
+                    $qb->andWhere("t.dateOccurred >= :{$filterKey}")
+                        ->setParameter($filterKey, $filterVal);
+                    break;
+                case 'occurredBefore':
+                    $qb->andWhere("t.dateOccurred < :{$filterKey}")
+                        ->setParameter($filterKey, $filterVal);
             }
         }// foreach
 
         return $qb;
     }
 
+    /**
+     * @deprecated
+     */
     public function getTransactions(array $options = array(), array $filters = array())
     {
         $defaultFilters = array(

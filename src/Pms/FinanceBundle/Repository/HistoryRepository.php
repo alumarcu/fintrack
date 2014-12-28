@@ -3,20 +3,18 @@ namespace Pms\FinanceBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-class ScopeRepository extends EntityRepository
+class HistoryRepository extends EntityRepository
 {
     public function getBuilderByFilters(array $filters = array())
     {
-        $qb = $this->createQueryBuilder('s');
+        $qb = $this->createQueryBuilder('h');
 
         foreach ($filters as $filterKey => $filterVal) {
 
             switch ($filterKey) {
                 case 'account':
-                    $qb->andWhere("{$filterKey} = :{$filterKey}")
+                    $qb->andWhere("h.{$filterKey} = :{$filterKey}")
                         ->setParameter($filterKey, $filterVal);
-                    break;
-                default:
                     break;
             }
 
@@ -25,5 +23,4 @@ class ScopeRepository extends EntityRepository
 
         return $qb;
     }
-
 }

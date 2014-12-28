@@ -2,9 +2,12 @@ services:
     pms_finance.menu:
         class: Pms\FinanceBundle\Service\MenuService
         arguments: []
-    pms_finance.dashboard:
-        class: Pms\FinanceBundle\Service\DashboardService
+    pms_finance.transaction:
+        class: Pms\FinanceBundle\Service\TransactionService
         arguments:
             em: "@doctrine.orm.entity_manager"
-            formFactory: "@form.factory"
+    pms_finance.history:
+        class: Pms\FinanceBundle\Service\HistoryService
+        arguments:
+            em: "@doctrine.orm.entity_manager"
 

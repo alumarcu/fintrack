@@ -3,50 +3,30 @@ namespace Pms\FinanceBundle\Controller;
 
 use Doctrine\ORM\Query;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 class DashboardController extends Controller
 {
     public function indexAction()
     {
-        /** @var $em \Doctrine\ORM\EntityManager */
-        $em = $this->getDoctrine()->getManager();
-
-        /** @var $accountRepo \Pms\FinanceBundle\Repository\AccountRepository */
-        $accountRepo = $em->getRepository('PmsFinanceBundle:Account');
-        $accountsBuilder = $accountRepo->getBuilderByFilters(array());
-        $accountsBuilder->select(
-            'a.id',
-            'a.displayName',
-            'a.bankName',
-            'a.currency',
-            'a.isFavorite'
-        );
-        $accounts = $accountsBuilder->getQuery()->getResult();
-
-        /** @var $scopeRepo \Pms\FinanceBundle\Repository\ScopeRepository */
-        $scopeRepo = $em->getRepository('PmsFinanceBundle:Scope');
-        $scopeBuilder = $scopeRepo->getBuilderByFilters();
-        $scopeBuilder->select(
-            's.id',
-            's.name'
-        );
-        $scopes = $scopeBuilder->getQuery()->getResult();
-
-        /** @var $transactionRepo \Pms\FinanceBundle\Repository\TransactionRepository */
-        $transactionRepo = $em->getRepository('PmsFinanceBundle:Transaction');
-        /** @var $transactionsHelper \Pms\FinanceBundle\Helper\BalanceHelper */
-        //$transactionsHelper = $transactionRepo->getTransactions();
-
-        // TODO: Split into partialScopes and mainScopes
-        // TODO: UI: Only when partialScopes are added recent Partial scopes panel is visible
-        return $this->render(
-            'PmsFinanceBundle:Dashboard:index.html.twig',
-            array(
-                'accounts' => $accounts,
-                'scopes' => $scopes,
-                'quickScopes' => array(),//$transactionsHelper->getScopes(),
-                'transactions' => array(),//$transactionsHelper->getTransactions()
-            )
-        );
+        return $this->render('PmsFinanceBundle:Dashboard:index.html.twig');
     }
+
+    public function formTransactionAction(Request $request)
+    {
+        // TODO: UI: Only when partialScopes are added recent Partial scopes panel is visible
+
+        // @todo: Load data required for the transaction form
+    }
+
+    public function tableTransactionsAction(Request $request)
+    {
+        /** @var $transactionRepo \Pms\FinanceBundle\Repository\TransactionRepository */
+        //$transactionRepo = $em->getRepository('PmsFinanceBundle:Transaction');
+        /** @var $transactionsHelper \Pms\FinanceBundle\Helper\BalanceHelper */
+        $transactionsHelper = $transactionRepo->getTransactions();
+
+        // @todo: Load data required for the recent transactions table based on front-end provided filters
+    }
+
 }

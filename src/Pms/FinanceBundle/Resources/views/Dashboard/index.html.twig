@@ -15,14 +15,15 @@
     <script type="text/javascript" src="{{ asset('bundles/pmslayout/js/typeahead.bundle.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/pmslayout/js/bootstrap-datepicker.js') }}"></script>
     {% javascripts
-        '@PmsFinanceBundle/Resources/public/js/views/dashboard.js'
-        output='bundles/pmsfinance/js/view' %}
+        '@PmsFinanceBundle/Resources/public/js/modules/transaction.js'
+        output='bundles/pmsfinance/js/module' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script type="text/javascript">
-        var view = new DashboardView();
-        view.set('scopes', JSON.parse('{{ scopes|json_encode|raw }}'));
-        view.init();
+        var page = new Page();
+        page.attachModule(new TransactionModule());
+        $(function() { page.onDocumentReady(); });
+        // TODO: Must act as generic view, to which modules are attached after checking that the view exists
     </script>
 {% endblock %}
 
@@ -30,14 +31,7 @@
     {{ parent() }}
     <div class="row">
         <div class="col-md-4 col-xs-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">New transaction</h3>
-                </div>
-                <div class="panel-body">
-                    {% include 'PmsFinanceBundle:Partials:transactionForm.html.twig' %}
-                </div>
-            </div>
+            {% include 'PmsFinanceBundle:Modules:Transaction/form.html.twig' %}
         </div>
         <div class="col-md-8 col-xs-12"></div>
     </div>

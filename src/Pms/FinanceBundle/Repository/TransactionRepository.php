@@ -21,6 +21,9 @@ class TransactionRepository extends EntityRepository
                         ->orWhere("t.destinationAccount = :{$filterKey}")
                         ->setParameter($filterKey, $filterVal);
                     break;
+                case 'occurredAfter':
+                    $qb->andWhere("t.dateOccurred > :{$filterKey}")
+                        ->setParameter($filterKey, $filterVal);
                 case 'occurredAfterOrEqual':
                     $qb->andWhere("t.dateOccurred >= :{$filterKey}")
                         ->setParameter($filterKey, $filterVal);
@@ -28,16 +31,51 @@ class TransactionRepository extends EntityRepository
                 case 'occurredBefore':
                     $qb->andWhere("t.dateOccurred < :{$filterKey}")
                         ->setParameter($filterKey, $filterVal);
+                case 'ijLines':
+                    $qb->innerJoin('PmsFinanceBundle:TransactionLine', 'tl', 'WITH', 't.id = tl.transaction');
+                    break;
+                case 'ijScopes':
+                    $qb->leftJoin('tl.scope', 'tls');
+                    break;
             }
         }// foreach
 
         return $qb;
     }
 
+    public function getTransactions(array $options = array())
+    {
+        if (!isset($options['filters'])) {
+            $options['filters'] = array(
+                'containsAccount' => 1,
+                'ijLines' => true,
+
+            );
+        }
+
+        $builder = $this->getBuilderByFilters(array_filter($options['filters']));
+        $builder->select(
+            'IDENTITY(t.sourceAccount) AS sourceAccount',
+            'IDENTITY(t.destinationAccount) AS destinationAccount',
+            't.dateOccurred',
+            'SUM(tl.value) as value'
+
+        );
+
+        $builder->addGroupBy('t.dateOccurred')
+            ->addGroupBy('t.sourceAccount');
+
+        $transactions = $builder->getQuery()->getResult();
+
+        //var_dump($transactions);
+
+
+    }
+
     /**
      * @deprecated
      */
-    public function getTransactions(array $options = array(), array $filters = array())
+    public function getTransactionsOld(array $options = array(), array $filters = array())
     {
         $defaultFilters = array(
 
@@ -49,7 +87,6 @@ class TransactionRepository extends EntityRepository
             'transaction_days_per_account_limit' => 10, // mandatory
             'return_scopes' => 'frequent',  // "frequent"|"recent"|null
             'return_scopes_limit' => 10,    // int|null
-
         );
         $options = array_merge($defaultOptions, array_filter($options));
 

@@ -40,4 +40,42 @@ class TransactionController extends Controller
 
         return $response->success();
     }
+
+    public function apiFormDataAction(Request $request)
+    {
+        /** @var \Pms\BaseBundle\Component\Http\ApiResponse $response */
+        $response = new ApiResponse();
+
+        $payload = array(
+            'accounts' => $this->getAccounts(),
+            'scopes' => $this->getScopes()
+        );
+
+
+        return $response->success($payload);
+    }
+
+    protected function getAccounts()
+    {
+        /** @var $em \Doctrine\ORM\EntityManager */
+        $em = $this->getDoctrine()->getManager();
+        /** @var $accountRepo \Pms\FinanceBundle\Repository\AccountRepository */
+        $accountRepo = $em->getRepository('PmsFinanceBundle:Account');
+        $accountsBuilder = $accountRepo->getBuilderByFilters();
+        $accountsBuilder->select('a.id, a.displayName, a.bankName, a.currency, a.isFavorite');
+
+        return $accountsBuilder->getQuery()->getResult();
+    }
+
+    protected function getScopes()
+    {
+        /** @var $em \Doctrine\ORM\EntityManager */
+        $em = $this->getDoctrine()->getManager();
+        /** @var $scopeRepo \Pms\FinanceBundle\Repository\ScopeRepository */
+        $scopeRepo = $em->getRepository('PmsFinanceBundle:Scope');
+        $scopeBuilder = $scopeRepo->getBuilderByFilters();
+        $scopeBuilder->select('s.id, s.name');
+
+        return $scopeBuilder->getQuery()->getResult();
+    }
 }

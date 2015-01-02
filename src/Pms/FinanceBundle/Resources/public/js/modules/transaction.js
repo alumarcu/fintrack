@@ -1,4 +1,5 @@
-var DashboardView = easejs.Class('DashboardView').extend( View,
+"use strict";
+var TransactionModule = easejs.Class('TransactionModule').extend( Module,
 {
     'protected _pageElements': [
         ['aps'          , '#addPartialScope'],
@@ -8,7 +9,8 @@ var DashboardView = easejs.Class('DashboardView').extend( View,
         ['mainValue'    , '#value'],
         ['qs'           , '.quickScope'],
         ['dp'           , '.datepicker'],
-        ['sel2'         , '.select2'],
+        ['sel2_source'  , '#sourceAccount'],
+        ['sel2_dest'    , '#destinationAccount'],
         ['psRowsTarget' , '#partialScopes'],
         ['psCellTmpl'   , '#partialScopeCell'],
         // source and destination accounts selects and swap button
@@ -20,21 +22,62 @@ var DashboardView = easejs.Class('DashboardView').extend( View,
         // form data elements
         ['sourceAccount', '#sourceAccount'],
         ['destAccount'  , '#destinationAccount'],
-        ['dateOccurred' , '#dateOccurred']
+        ['dateOccurred' , '#dateOccurred'],
+        // form async load
+        ['fload'        , '#formLoading'],
+        ['form'         , '#form_NewTransaction']
     ],
 
     'private _scopeOptions': null,
     'public counter': 0,
 
-    'protected _onDocumentReady': function() {
-        this.initTypeahead('mainScope');
+    'public onDocumentReady': function() {
+
+        console.log("Loading Module: Transaction");
+
+        this.update('form', 'fload');
         this.initDatepicker('dp');
-        this.initSelect('sel2');
+
         this._onClick('qs', this.__self._clickedAddPartialScope, this);
         this._onClick('aps', this.__self._clickedAddPartialScope, this);
         this._onClick('sa', this.__self._clickedSwapAccounts, this);
         this._onClick('lt', this.__self._clickedLockTransaction, this);
         this._onClick('save', this.__self._clickedSaveTransaction, this);
+    },
+
+    'public update': function(content, loader) {
+        var httpRequest;
+
+        this.get(content).hide();
+        this.get(loader).show();
+
+        // TODO: Need to async load  quick scopes (recent OR frequent)
+        httpRequest = $.ajax( {
+            url: Routing.generate('pms_finance_transaction_form_data'),
+            type: 'GET',
+            context: this,
+            success: function(response, status) {
+
+                this.set('scopes', response.val['scopes']);
+                this.set('accounts', response.val['accounts']);
+
+                // Initialize elements
+                this.initSelect('sel2_source');
+                this.initSelect('sel2_dest');
+
+                this._scopeOptions = null; // Must delete existing scopes to update
+                this.initTypeahead('mainScope');
+
+                // Show the module
+                this.get(loader).hide();
+                this.get(content).show();
+
+                console.log("Transaction: Update success");
+            },
+            error: function() {
+
+            }
+        } );
     },
 
     'public initTypeahead': function(elementName, notCached) {
@@ -60,7 +103,16 @@ var DashboardView = easejs.Class('DashboardView').extend( View,
     },
 
     'public initSelect': function(elementName) {
-        this.getFirst(elementName).select2(Config.$('select2'));
+        var selectElement = this.getFirst(elementName), selected;
+
+        selectElement.find('option[value!="null"]').remove();
+
+        for (var i in this.get('accounts')) {
+            selected = (this.get('accounts')[i].isFavorite && elementName == 'sel2_source') ? ' selected="selected"' : '';
+            selectElement.append('<option value="' + this.get('accounts')[i].id + '"' + selected + '>' + this.get('accounts')[i].displayName +'</option>');
+        }
+
+        selectElement.select2(Config.$('select2'));
     },
 
     'public lockTransaction': function() {
@@ -118,15 +170,17 @@ var DashboardView = easejs.Class('DashboardView').extend( View,
     'public sendSaveTransaction': function(ds) {
         var payload = JSON.stringify(ds), httpRequest;
         console.log(ds);
-        console.log(Routing.generate('pms_finance_save_transaction'));
+        console.log(Routing.generate('pms_finance_transaction_save'));
 
         httpRequest = $.ajax( {
-            url: Routing.generate('pms_finance_save_transaction'),
+            url: Routing.generate('pms_finance_transaction_save'),
             type: 'POST',
             data: payload,
             dataType: 'json',
+            context: this,
             success: function(response, status) {
-                console.log("Request success");
+                console.log("Transaction: Save success");
+                this.update('form', 'fload');
             },
             error: function() {
 

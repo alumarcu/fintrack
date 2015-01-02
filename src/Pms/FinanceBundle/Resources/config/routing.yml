@@ -4,9 +4,14 @@ pms_finance_dashboard:
 pms_finance_importer:
     path: /importer
     defaults: { _controller: PmsFinanceBundle:Importer:index }
-pms_finance_save_transaction:
+pms_finance_transaction_save:
     path:     /api/transaction/save
     defaults: { _controller: PmsFinanceBundle:Transaction:apiSave }
+    options:
+        expose: true
+pms_finance_transaction_form_data:
+    path:     /api/transaction/form-data
+    defaults: { _controller: PmsFinanceBundle:Transaction:apiFormData }
     options:
         expose: true
 

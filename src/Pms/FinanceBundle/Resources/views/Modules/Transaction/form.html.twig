@@ -1,4 +1,14 @@
+<div class="panel panel-default">
+<div class="panel-heading">
+<h3 class="panel-title">New transaction</h3>
+</div>
+<div class="panel-body">
+<div id="formLoading">
+    Loading..
+</div>
 <form name="NewTransaction" id="form_NewTransaction" method="post">
+
+
 
     <div class="row">
         {# Source account cell #}
@@ -7,9 +17,6 @@
             <div class="column-cell">
                 <select id="sourceAccount" name="transaction[sourceAccount]" class="form-control select2">
                     <option value="null">{% trans %}pms_finance_bundle.external{% endtrans %}</option>
-                    {% for acco in accounts %}
-                        <option value="{{ acco.id }}" {% if acco.isFavorite == 1 %}selected="selected"{% endif %}>{{ acco.displayName }}</option>
-                    {% endfor %}
                 </select>
             </div>
         </div>
@@ -29,9 +36,6 @@
             <div class="column-cell">
                 <select id="destinationAccount" name="transaction[destinationAccount]" class="form-control select2">
                     <option value="null">{% trans %}pms_finance_bundle.external{% endtrans %}</option>
-                    {% for acco in accounts %}
-                        <option value="{{ acco.id }}">{{ acco.displayName }}</option>
-                    {% endfor %}
                 </select>
             </div>
         </div>
@@ -66,9 +70,9 @@
                 <a id="addPartialScope" class="interaction">{% trans %}pms_finance_bundle.add_partial_scope{% endtrans %}&nbsp;<span class="fa fa-arrow-circle-up"></span></a>
                 <h4>Recent</h4>
                 <div class="well well-sm">
-                    {% for scope in quickScopes %}
-                        <span class="label label-default quickScope interaction">{{ scope }}</span>
-                    {% endfor %}
+                    {#% for scope in quickScopes %#}
+                        {#<span class="label label-default quickScope interaction">{{ scope }}</span>#}
+                    {#% endfor %#}
                 </div>
             </div>
         </div>
@@ -89,6 +93,8 @@
     </div>
 
 </form>
+</div>
+</div>
 <script id="partialScopeCell" type="x-tmpl-mustache">
 {% verbatim %}
 <div id="{{ psId }}" class="row partialScopePair">

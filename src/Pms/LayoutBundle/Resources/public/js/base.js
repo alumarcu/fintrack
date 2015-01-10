@@ -46,9 +46,9 @@ var
             },
             'protected _onClick': function(elemKey, callback, context) {
                 if (typeof context == 'undefined') {
-                    this._properties[elemKey].click(callback);
+                    this._properties[elemKey].off('click').click(callback);
                 } else {
-                    this._properties[elemKey].click(context, callback);
+                    this._properties[elemKey].off('click').click(context, callback);
                 }
             }
         } ),

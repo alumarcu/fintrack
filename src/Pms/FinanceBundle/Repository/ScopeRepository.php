@@ -12,18 +12,14 @@ class ScopeRepository extends EntityRepository
         foreach ($filters as $filterKey => $filterVal) {
 
             switch ($filterKey) {
-                case 'account':
-                    $qb->andWhere("{$filterKey} = :{$filterKey}")
+                case 'name':
+                case 'parent':
+                    $qb->andWhere("s.{$filterKey} = :{$filterKey}")
                         ->setParameter($filterKey, $filterVal);
                     break;
-                default:
-                    break;
             }
-
-
         }// foreach
 
         return $qb;
     }
-
 }

@@ -54,6 +54,9 @@ body {
     float: left;
 }
 
+#form_NewTransaction {
+    display: none;
+}
 #form_NewTransaction .row {
     margin-left: -5px !important;
     margin-right: -5px !important;

@@ -8,6 +8,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class TransactionController extends Controller
 {
+    /**
+     * Example: {"dest":"null","src":"1","mainScope":"casnice","mainValue":23,"dateOccurred":"20-12-2014","partials":[{"value":11,"scope":"alcool"}]}
+     * @param Request $request
+     * @return $this
+     */
     public function apiSaveAction(Request $request)
     {
         /** @var \Doctrine\ORM\EntityManager $em */
@@ -48,9 +53,9 @@ class TransactionController extends Controller
 
         $payload = array(
             'accounts' => $this->getAccounts(),
-            'scopes' => $this->getScopes()
+            'scopes' => $this->getScopes(),
+            'quickScopes' => $this->getQuickScopes('frq')
         );
-
 
         return $response->success($payload);
     }
@@ -77,5 +82,26 @@ class TransactionController extends Controller
         $scopeBuilder->select('s.id, s.name');
 
         return $scopeBuilder->getQuery()->getResult();
+    }
+
+    protected function getQuickScopes($mode = 'frq')
+    {
+        /** @var $em \Doctrine\ORM\EntityManager */
+        $em = $this->getDoctrine()->getManager();
+        /** @var $transactionRepo \Pms\FinanceBundle\Repository\TransactionRepository */
+        $transactionRepo = $em->getRepository('PmsFinanceBundle:Transaction');
+
+        $options = array(
+            'scopes_size' => 15,
+            'days_before' => 7
+        );
+        switch ($mode) {
+            case 'frq':
+                return $transactionRepo->getFrequentScopes($options);
+            case 'rec':
+                return $transactionRepo->getRecentScopes($options);
+        }
+
+        return array();
     }
 }

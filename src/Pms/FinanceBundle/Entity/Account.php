@@ -11,6 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Account
 {
+    // TODO: Should belong with user preferences for the app!
+    const DATE_FORMAT = 'd-m-Y';
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id

@@ -7,10 +7,7 @@
     Loading..
 </div>
 <form name="NewTransaction" id="form_NewTransaction" method="post">
-
-
-
-    <div class="row">
+   <div class="row">
         {# Source account cell #}
         <div class="col-xs-5 no-padding">
             <div class="column-cell"><label for="sourceAccount">{% trans %}pms_finance_bundle.source{% endtrans %}</label></div>
@@ -39,9 +36,9 @@
                 </select>
             </div>
         </div>
-    </div>
+   </div>
 
-    <div class="row">
+   <div class="row">
         <div class="col-xs-4 no-padding">
             <div class="form-cell">
                 <label for="value">{% trans %}pms_finance_bundle.value{% endtrans %}</label>
@@ -63,22 +60,18 @@
         </div>
     </div>
 
-    <div class="row">
+   <div class="row">
         <div class="col-xs-12 no-padding">
             <div class="well well-sm well-quick-scopes">
                 <div id="partialScopes"></div>
                 <a id="addPartialScope" class="interaction">{% trans %}pms_finance_bundle.add_partial_scope{% endtrans %}&nbsp;<span class="fa fa-arrow-circle-up"></span></a>
                 <h4>Recent</h4>
-                <div class="well well-sm">
-                    {#% for scope in quickScopes %#}
-                        {#<span class="label label-default quickScope interaction">{{ scope }}</span>#}
-                    {#% endfor %#}
-                </div>
+                <div id="quickScopesDiv" class="well well-sm"></div>
             </div>
         </div>
-    </div>
+   </div>
 
-    <div class="row">
+   <div class="row">
         <div class="col-xs-8 form-cell">
             <div class="input-group date">
                 <input type="text" id="dateOccurred" name="transaction[dateOccurred]" class="form-control datepicker" data-date-format="dd-mm-yyyy" value="{{ 'now'|date('d-m-Y') }}" />
@@ -90,8 +83,7 @@
                 <span class="fa fa-check-circle"></span> Save
             </button>
         </div>
-    </div>
-
+   </div>
 </form>
 </div>
 </div>

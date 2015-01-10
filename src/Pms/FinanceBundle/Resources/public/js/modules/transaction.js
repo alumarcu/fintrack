@@ -7,12 +7,14 @@ var TransactionModule = easejs.Class('TransactionModule').extend( Module,
         ['lt-icon'      , '#lockTransaction span.fa'],
         ['mainScope'    , '#scope'],
         ['mainValue'    , '#value'],
-        ['qs'           , '.quickScope'],
         ['dp'           , '.datepicker'],
         ['sel2_source'  , '#sourceAccount'],
         ['sel2_dest'    , '#destinationAccount'],
         ['psRowsTarget' , '#partialScopes'],
         ['psCellTmpl'   , '#partialScopeCell'],
+        // quick scopes and container
+        ['qsContainer'  , '#quickScopesDiv'],
+        ['qs'           , '.quickScope'],
         // source and destination accounts selects and swap button
         ['sa'           , '#swapAccounts'],
         ['accDestination', '#destinationAccount'],
@@ -32,17 +34,8 @@ var TransactionModule = easejs.Class('TransactionModule').extend( Module,
     'public counter': 0,
 
     'public onDocumentReady': function() {
-
-        console.log("Loading Module: Transaction");
-
+        console.log("LOADING MODULE: Transaction");
         this.update('form', 'fload');
-        this.initDatepicker('dp');
-
-        this._onClick('qs', this.__self._clickedAddPartialScope, this);
-        this._onClick('aps', this.__self._clickedAddPartialScope, this);
-        this._onClick('sa', this.__self._clickedSwapAccounts, this);
-        this._onClick('lt', this.__self._clickedLockTransaction, this);
-        this._onClick('save', this.__self._clickedSaveTransaction, this);
     },
 
     'public update': function(content, loader) {
@@ -51,7 +44,6 @@ var TransactionModule = easejs.Class('TransactionModule').extend( Module,
         this.get(content).hide();
         this.get(loader).show();
 
-        // TODO: Need to async load  quick scopes (recent OR frequent)
         httpRequest = $.ajax( {
             url: Routing.generate('pms_finance_transaction_form_data'),
             type: 'GET',
@@ -60,19 +52,33 @@ var TransactionModule = easejs.Class('TransactionModule').extend( Module,
 
                 this.set('scopes', response.val['scopes']);
                 this.set('accounts', response.val['accounts']);
+                this.set('quickScopes', response.val['quickScopes']);
 
                 // Initialize elements
                 this.initSelect('sel2_source');
                 this.initSelect('sel2_dest');
 
+                // Autocomplete scopes
                 this._scopeOptions = null; // Must delete existing scopes to update
                 this.initTypeahead('mainScope');
+
+                // Quick scope suggestions
+                this.initQuickScopes('qsContainer');
+
+                // Other initializations
+                this.initDatepicker('dp');
+
+                this._onClick('qs', this.__self._clickedAddPartialScope, this);
+                this._onClick('aps', this.__self._clickedAddPartialScope, this);
+                this._onClick('sa', this.__self._clickedSwapAccounts, this);
+                this._onClick('lt', this.__self._clickedLockTransaction, this);
+                this._onClick('save', this.__self._clickedSaveTransaction, this);
 
                 // Show the module
                 this.get(loader).hide();
                 this.get(content).show();
 
-                console.log("Transaction: Update success");
+                console.log("MODULE::Transaction::Update OK");
             },
             error: function() {
 
@@ -96,6 +102,18 @@ var TransactionModule = easejs.Class('TransactionModule').extend( Module,
             element = this.getFirst(elementName);
         }
         element.typeahead(Config.$('typeahead'), { source: Tools.getAutocomplete(this._scopeOptions) });
+    },
+
+    'public initQuickScopes': function(containerName) {
+        var qs;
+        this.get(containerName).html('');
+
+        for (var i in this.get('quickScopes')) {
+            qs = '<span class="label label-default quickScope interaction">' + this.get('quickScopes')[i] + '</span>';
+            this.get(containerName).append(qs + ' ');
+        }
+        // Re-cache the quickScope selection in order to be able to append the click event later
+        this.set('qs', $('.quickScope'));
     },
 
     'public initDatepicker': function(elementName) {
@@ -169,8 +187,8 @@ var TransactionModule = easejs.Class('TransactionModule').extend( Module,
 
     'public sendSaveTransaction': function(ds) {
         var payload = JSON.stringify(ds), httpRequest;
-        console.log(ds);
-        console.log(Routing.generate('pms_finance_transaction_save'));
+        //console.log(ds);
+        //console.log(Routing.generate('pms_finance_transaction_save'));
 
         httpRequest = $.ajax( {
             url: Routing.generate('pms_finance_transaction_save'),
@@ -179,7 +197,7 @@ var TransactionModule = easejs.Class('TransactionModule').extend( Module,
             dataType: 'json',
             context: this,
             success: function(response, status) {
-                console.log("Transaction: Save success");
+                console.log("MODULE::Transaction::Saved OK");
                 this.update('form', 'fload');
             },
             error: function() {

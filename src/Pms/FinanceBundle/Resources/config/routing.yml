@@ -14,4 +14,8 @@ pms_finance_transaction_form_data:
     defaults: { _controller: PmsFinanceBundle:Transaction:apiFormData }
     options:
         expose: true
-
+pms_finance_balance_data:
+    path:     /api/balance/data
+    defaults: { _controller: PmsFinanceBundle:Dashboard:apiBalanceData }
+    options:
+        expose: true

@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ asset('bundles/pmslayout/css/select2.css') }}" />
     <link rel="stylesheet" href="{{ asset('bundles/pmslayout/css/select2-bootstrap.css') }}" />
     <link rel="stylesheet" href="{{ asset('bundles/pmslayout/css/datepicker3.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/pmslayout/css/jquery.dataTables.css') }}" />
 {% endblock %}
 
 {% block javascripts %}
@@ -14,14 +15,18 @@
     <script type="text/javascript" src="{{ asset('bundles/pmslayout/js/select2.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/pmslayout/js/typeahead.bundle.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/pmslayout/js/bootstrap-datepicker.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/pmslayout/js/jquery.dataTables.js') }}"></script>
     {% javascripts
         '@PmsFinanceBundle/Resources/public/js/modules/transaction.js'
+        '@PmsFinanceBundle/Resources/public/js/modules/balance.js'
         output='bundles/pmsfinance/js/module' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script type="text/javascript">
         var page = new Page();
         page.attachModule(new TransactionModule());
+        // TODO: Do this for all available accounts or for predefined accounts
+        page.attachModule(new BalanceModule(1));
         $(function() { page.onDocumentReady(); });
         // TODO: Must act as generic view, to which modules are attached after checking that the view exists
     </script>
@@ -34,5 +39,12 @@
             {% include 'PmsFinanceBundle:Modules:Transaction/form.html.twig' %}
         </div>
         <div class="col-md-8 col-xs-12"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-xs-12">
+            {% include 'PmsFinanceBundle:Modules:Balance/table.html.twig' %}
+        </div>
+        <div class="col-md-6 col-xs-12"></div>
+
     </div>
 {% endblock %}

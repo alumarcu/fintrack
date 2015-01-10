@@ -9,6 +9,9 @@ class TransactionException extends TranslatedException
     const SAVE_OCCURRED_IN_FUTURE = 2;
     const SAVE_TRANSACTION_NO_VALUE = 3;
 
+    const LIST_BALANCE_NO_ACCOUNT = 11;
+    const LIST_BALANCE_ACCOUNT_NOT_FOUND = 12;
+
     protected function getTranslationPrefix()
     {
         return 'translation.exception.';
@@ -29,6 +32,14 @@ class TransactionException extends TranslatedException
                 "{$pre}save_transaction_no_value",
                 "Transaction has no value"
             ),
+            self::LIST_BALANCE_NO_ACCOUNT => array(
+                "{$pre}list_balance_no_account",
+                "Missing account id for which to retreive balance lines"
+            ),
+            self::LIST_BALANCE_ACCOUNT_NOT_FOUND => array(
+                "{$pre}list_balance_account_not_found",
+                "Account id not found"
+            )
         );
     }
 }

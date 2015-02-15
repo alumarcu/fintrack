@@ -25,6 +25,8 @@ body {
 
 .sq24 { width: 24px; height: 24px; }
 
+.nodisp { display: none; }
+
 /* Bootstrap Overrides */
 .form-group { margin-bottom: 10px; }
 .form-control { height: 28px; line-height: 1.0; }

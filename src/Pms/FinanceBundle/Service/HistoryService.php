@@ -25,9 +25,11 @@ class HistoryService
      */
     public function save(array $info)
     {
-        if (!($accountId = $info['account'])) {
+        if (empty($info['account'])) {
             return;
         }
+
+        $accountId = $info['account'];
 
         $this->now = $this->now ?: new \DateTime();
 

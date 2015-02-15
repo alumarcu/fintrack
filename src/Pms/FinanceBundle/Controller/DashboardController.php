@@ -3,6 +3,7 @@ namespace Pms\FinanceBundle\Controller;
 
 use Doctrine\ORM\Query;
 use Pms\BaseBundle\Component\Http\ApiResponse;
+use Pms\FinanceBundle\Entity\Account;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Pms\FinanceBundle\Exception\TransactionException;
@@ -11,8 +12,18 @@ class DashboardController extends Controller
 {
     public function indexAction()
     {
+        /** @var $em \Doctrine\ORM\EntityManager */
+        $em = $this->getDoctrine()->getManager();
+        /** @var $accountRepo \Pms\FinanceBundle\Repository\AccountRepository */
+        $accountRepo = $em->getRepository('PmsFinanceBundle:Account');
+
         // Loads the dashboard template; module data is sent async
-        return $this->render('PmsFinanceBundle:Dashboard:index.html.twig');
+        return $this->render(
+            'PmsFinanceBundle:Dashboard:index.html.twig',
+            array(
+                'accounts' => $accountRepo->getAccounts()
+            )
+        );
     }
 
     /**
@@ -28,6 +39,8 @@ class DashboardController extends Controller
         $util = $this->container->get('pms_base.utility');
         /** @var \Pms\FinanceBundle\Repository\TransactionRepository $transactionRepo */
         $transactionRepo = $em->getRepository('PmsFinanceBundle:Transaction');
+        /** @var \Pms\FinanceBundle\Repository\HistoryRepository $historyRepo */
+        $historyRepo = $em->getRepository('PmsFinanceBundle:History');
         /** @var \Pms\BaseBundle\Component\Http\ApiResponse $response */
         $response = new ApiResponse();
 
@@ -57,7 +70,30 @@ class DashboardController extends Controller
             $lines = $transactionRepo->getTransactionsDaily($accountId, $extraFilters);
             $lines = array_merge_recursive($lines, $transactionRepo->getTransactionLineScopes($accountId, $extraFilters));
 
-            $return['lines'] = $lines;
+            $firstLine = end($lines);
+            $firstLineDate = \DateTime::createFromFormat(Account::DATE_FORMAT, $firstLine['date']);
+            reset($lines);
+
+            $filters = array(
+                'before' => $firstLineDate,
+                'account' => $accountId
+            );
+
+            // todo - verify this logic, of providing the balance based on earlies shown date
+            $builder = $historyRepo->getBuilderByFilters($filters);
+            $builder->orderBy('h.date', 'desc');
+            /** @var \Pms\FinanceBundle\Entity\History $historyLine */
+            $historyLine = $builder->getQuery()->setMaxResults(1)->getOneOrNullResult();
+            $lastBalance = is_null($historyLine) ? .0 : $historyLine->getValue();
+
+            $lines = array_reverse($lines);
+            foreach ($lines as &$line) {
+                $isIncome = intval($line['isIncome']);
+                $lastBalance += $isIncome ? $line['value'] : -$line['value'];
+                $line['balance'] = $lastBalance;
+            }
+
+            $return['lines'] = array_reverse($lines);
             $return['account'] = array(
                 'currency' => $account->getCurrency(),
                 'name' => $account->getDisplayName(),

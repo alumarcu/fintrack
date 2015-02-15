@@ -21,4 +21,12 @@ class AccountRepository extends EntityRepository
         return $qb;
     }
 
+    public function getAccounts(array $filters = array())
+    {
+        $qb = $this->getBuilderByFilters($filters);
+        $qb->select('a.id, a.displayName, a.bankName, a.currency, a.isFavorite');
+
+        return $qb->getQuery()->getResult();
+    }
+
 }

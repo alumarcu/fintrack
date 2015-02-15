@@ -24,9 +24,18 @@
     {% endjavascripts %}
     <script type="text/javascript">
         var page = new Page();
+
         page.attachModule(new TransactionModule());
+
         // TODO: Do this for all available accounts or for predefined accounts
-        page.attachModule(new BalanceModule(1));
+        {% if accounts is defined %}
+            {% for account in accounts %}
+                page.attachModule(new BalanceModule({{ account.id }}));
+            {% endfor %}
+        {% else %}
+            console.log("MODULE::Balance::Error: accounts var missing!");
+        {% endif %}
+
         $(function() { page.onDocumentReady(); });
         // TODO: Must act as generic view, to which modules are attached after checking that the view exists
     </script>

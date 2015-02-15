@@ -1,18 +1,31 @@
-<table id="table_id" class="display">
-    <thead>
-    <tr>
-        <th>Column 1</th>
-        <th>Column 2</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td>Row 1 Data 1</td>
-        <td>Row 1 Data 2</td>
-    </tr>
-    <tr>
-        <td>Row 2 Data 1</td>
-        <td>Row 2 Data 2</td>
-    </tr>
-    </tbody>
-</table>
+{% macro balancePanel(account) %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Balance for account: {{ account.displayName }}</h3>
+    </div>
+    <div class="panel-body">
+        <div id="formLoadingForAccount{{ account.id }}">
+            Loading...
+        </div>
+        <table class="balanceTable nodisp" id="balanceForAccount{{ account.id }}">
+            <thead>
+                <tr>
+                    <th>Occurred on</th>
+                    <th>Amount</th>
+                    <th>Labels & Comments</th>
+                    <th>Balance</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+{% endmacro %}
+
+{% if accounts is defined %}
+    {% import _self as balance %}
+    {% for account in accounts %}
+        {{ balance.balancePanel(account) }}
+    {% endfor %}
+{% else %}
+    Balance Mod: Error: accounts var missing!
+{% endif %}

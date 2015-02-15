@@ -51,25 +51,18 @@ class TransactionController extends Controller
         /** @var \Pms\BaseBundle\Component\Http\ApiResponse $response */
         $response = new ApiResponse();
 
+        /** @var $em \Doctrine\ORM\EntityManager */
+        $em = $this->getDoctrine()->getManager();
+        /** @var $accountRepo \Pms\FinanceBundle\Repository\AccountRepository */
+        $accountRepo = $em->getRepository('PmsFinanceBundle:Account');
+
         $payload = array(
-            'accounts' => $this->getAccounts(),
+            'accounts' => $accountRepo->getAccounts(),
             'scopes' => $this->getScopes(),
             'quickScopes' => $this->getQuickScopes('frq')
         );
 
         return $response->success($payload);
-    }
-
-    protected function getAccounts()
-    {
-        /** @var $em \Doctrine\ORM\EntityManager */
-        $em = $this->getDoctrine()->getManager();
-        /** @var $accountRepo \Pms\FinanceBundle\Repository\AccountRepository */
-        $accountRepo = $em->getRepository('PmsFinanceBundle:Account');
-        $accountsBuilder = $accountRepo->getBuilderByFilters();
-        $accountsBuilder->select('a.id, a.displayName, a.bankName, a.currency, a.isFavorite');
-
-        return $accountsBuilder->getQuery()->getResult();
     }
 
     protected function getScopes()

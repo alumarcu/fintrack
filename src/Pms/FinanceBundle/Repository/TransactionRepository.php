@@ -65,7 +65,8 @@ class TransactionRepository extends EntityRepository
 
         $builder
             ->addGroupBy('t.dateOccurred')
-            ->addGroupBy('t.sourceAccount');
+            ->addGroupBy('t.sourceAccount')
+            ->orderBy('t.dateOccurred', 'desc');
 
         // Retreive transactions as aggregated in the above query
         $transactions = $builder->getQuery()->getResult();
@@ -106,6 +107,8 @@ class TransactionRepository extends EntityRepository
             '(CASE WHEN t.sourceAccount = 1 THEN 0 ELSE 1 END) AS income'
             // When above is 1, t.destinationAccount is $account, as per query
         );
+
+        $builder->orderBy('t.dateOccurred', 'desc');
 
         // Note there's no way to group the lines here, until we implement something like GROUP_CONCAT
         $lineScopes = $builder->getQuery()->getResult();

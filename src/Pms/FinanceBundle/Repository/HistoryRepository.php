@@ -16,6 +16,10 @@ class HistoryRepository extends EntityRepository
                     $qb->andWhere("h.{$filterKey} = :{$filterKey}")
                         ->setParameter($filterKey, $filterVal);
                     break;
+                case 'before':
+                    $qb->andWhere("h.date < :{$filterKey}")
+                        ->setParameter($filterKey, $filterVal);
+                    break;
             }
 
 
